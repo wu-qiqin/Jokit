@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
 
 /**
  * Create by joe on 2018/9/28
+ * <p>
+ * 日期自动抽取工具类
  */
 public class DateUtils {
     private static final Logger logger = LogManager.getLogger(DateUtils.class);
