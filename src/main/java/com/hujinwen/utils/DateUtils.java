@@ -33,7 +33,7 @@ public class DateUtils {
 
     private static final String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    static {  // TODO +++++> 年份不可写成\\d{2,4}，会导致结果错误 <+++++
+    static {  // FIXME +++++> 年份不可写成\\d{2,4}，会导致结果错误 <+++++
         DATE_FORMAT_LIST.add(new DateFormat(Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}[\\s\\p{Zs}]+\\d{1,2}:\\d{1,2}:\\d{1,2}"), "yyyy-MM-dd HH:mm:ss"));
         DATE_FORMAT_LIST.add(new DateFormat(Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}T\\d{1,2}:\\d{1,2}:\\d{1,2}"), "yyyy-MM-dd'T'HH:mm:ss"));
         DATE_FORMAT_LIST.add(new DateFormat(Pattern.compile("\\d{4}-\\d{1,2}-\\d{1,2}[\\s\\p{Zs}]+\\d{1,2}:\\d{1,2}"), "yyyy-MM-dd HH:mm"));
