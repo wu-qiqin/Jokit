@@ -87,4 +87,21 @@ public class UrlUtils {
         baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf("/"));
         return baseUrl.substring(0, baseUrl.lastIndexOf("/") + 1);
     }
+
+    /**
+     * 抽取url中最后一段作为文件名
+     *
+     * @param url url
+     */
+    public static String extraFilename(String url) {
+        int index = url.indexOf("?");
+        if (index != -1) {
+            url = url.substring(0, index);
+        }
+        if (url.endsWith("/")) {
+            url = url.substring(0, url.length() - 1);
+        }
+        int index1 = url.lastIndexOf("/");
+        return url.substring(index1 + 1);
+    }
 }
