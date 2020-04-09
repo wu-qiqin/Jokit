@@ -7,10 +7,11 @@
 
 
 ## 使用
-
+导入[release](https://github.com/i-hujinwen/JUtils/releases)中的jar包
 
 
 ## 详解
+> 此处未一一列举，详细内容请在使用中发现
 
 ### 日期相关
 
