@@ -89,11 +89,16 @@ public class HttpClient implements Closeable {
 
     /**
      * get请求获取字符串
+     *
+     * @param url     请求链接
+     * @param headers 请求头
+     * @param cookies 请求cookie
+     * @param proxy   请求代理
      */
-    public String doGetAsStr(String url) throws IOException {
+    public String doGetAsStr(String url, Map<String, String> headers, Map<String, String> cookies, HttpProxy proxy) {
         final HttpGet httpGet = new HttpGet(url);
         try {
-            exec(httpGet, null, null, null);
+            exec(httpGet, headers, cookies, proxy);
             return EntityUtils.toString(response.getEntity(), "utf-8");
         } catch (IOException | ParseException e) {
             logger.error(e.getMessage(), e);
@@ -101,10 +106,35 @@ public class HttpClient implements Closeable {
         return null;
     }
 
-    public InputStream doGetAsStream(String url) {
+    /**
+     * overwrite
+     */
+    public String doGetAsStr(String url) throws IOException {
+        return doGetAsStr(url, null, null, null);
+    }
+
+    /**
+     * overwrite
+     */
+    public String doGetAsStr(String url, Map<String, String> headers) {
+        return doGetAsStr(url, headers, null, null);
+    }
+
+    /**
+     * overwrite
+     */
+    public String doGetAsStr(String url, Map<String, String> headers, Map<String, String> cookies) {
+        return doGetAsStr(url, headers, cookies, null);
+    }
+
+
+    /**
+     * get请求返回输入流
+     */
+    public InputStream doGetAsStream(String url, Map<String, String> headers, Map<String, String> cookies, HttpProxy proxy) {
         final HttpGet httpGet = new HttpGet(url);
         try {
-            exec(httpGet, null, null, null);
+            exec(httpGet, headers, cookies, proxy);
             if (response != null) {
                 return response.getEntity().getContent();
             }
@@ -112,6 +142,28 @@ public class HttpClient implements Closeable {
             logger.error(ioe.getMessage(), ioe);
         }
         return null;
+    }
+
+
+    /**
+     * overwrite
+     */
+    public InputStream doGetAsStream(String url) {
+        return doGetAsStream(url, null, null, null);
+    }
+
+    /**
+     * overwrite
+     */
+    public InputStream doGetAsStream(String url, Map<String, String> headers) {
+        return doGetAsStream(url, headers, null, null);
+    }
+
+    /**
+     * overwrite
+     */
+    public InputStream doGetAsStream(String url, Map<String, String> headers, Map<String, String> cookies) {
+        return doGetAsStream(url, headers, cookies, null);
     }
 
 
@@ -229,12 +281,6 @@ public class HttpClient implements Closeable {
         if (httpClient != null) {
             httpClient.close();
         }
-    }
-
-    public static void main(String[] args) throws IOException {
-        final HttpClient httpClient = new HttpClient();
-        final String content = httpClient.doGetAsStr("http://forspeed.onlinedown.net/down/newdown/2/17/Warcraft3_1.24E.rar");
-        System.out.println();
     }
 
 }
