@@ -17,6 +17,7 @@ import org.apache.hc.client5.http.impl.cookie.BasicClientCookie;
 import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.client5.http.protocol.RedirectLocations;
 import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
@@ -98,7 +99,7 @@ public class HttpClient implements Closeable {
     public String doGetAsStr(String url, Map<String, String> headers, Map<String, String> cookies, HttpProxy proxy) {
         final HttpGet httpGet = new HttpGet(url);
         try {
-            exec(httpGet, headers, cookies, proxy);
+            exec(httpGet, headers, cookies, proxy, null);
             return EntityUtils.toString(response.getEntity(), "utf-8");
         } catch (IOException | ParseException e) {
             logger.error(e.getMessage(), e);
@@ -134,7 +135,7 @@ public class HttpClient implements Closeable {
     public InputStream doGetAsStream(String url, Map<String, String> headers, Map<String, String> cookies, HttpProxy proxy) {
         final HttpGet httpGet = new HttpGet(url);
         try {
-            exec(httpGet, headers, cookies, proxy);
+            exec(httpGet, headers, cookies, proxy, null);
             if (response != null) {
                 return response.getEntity().getContent();
             }
@@ -170,7 +171,7 @@ public class HttpClient implements Closeable {
     /**
      * 执行
      */
-    private void exec(BasicClassicHttpRequest request, Map<String, String> headers, Map<String, String> cookies, HttpProxy proxy) throws IOException {
+    private void exec(BasicClassicHttpRequest request, Map<String, String> headers, Map<String, String> cookies, HttpProxy proxy, HttpEntity entity) throws IOException {
         // 请求头
         if (ObjectUtils.isEmpty(headers)) {
             headers = this.headers;
@@ -188,12 +189,17 @@ public class HttpClient implements Closeable {
             setProxy(proxy);
             rebuildClient();
         }
+        // entity
+        if (entity != null) {
+            request.setEntity(entity);
+        }
 
         if (httpClient == null) {
             httpClient = clientBuilder.build();
         }
         context = HttpClientContext.create();
         response = httpClient.execute(request, context);
+
         httpResult.extractField(response);
         httpResult.extractField(context);
     }
