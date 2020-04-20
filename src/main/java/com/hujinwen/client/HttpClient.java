@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.hc.client5.http.auth.AuthScope;
 import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.cookie.BasicCookieStore;
 import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -167,6 +168,23 @@ public class HttpClient implements Closeable {
         return doGetAsStream(url, headers, cookies, null);
     }
 
+    /**
+     * post请求，返回输入流
+     */
+    public InputStream doPostAsStream(String url, Map<String, String> headers, Map<String, String> cookies, HttpProxy proxy, HttpEntity entity) {
+        final HttpPost httpPost = new HttpPost(url);
+
+        try {
+            exec(httpPost, headers, cookies, proxy, entity);
+            if (response != null) {
+                return response.getEntity().getContent();
+            }
+        } catch (IOException ioe) {
+            logger.error(ioe.getMessage(), ioe);
+        }
+        return null;
+    }
+
 
     /**
      * 执行
@@ -179,14 +197,18 @@ public class HttpClient implements Closeable {
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             request.setHeader(entry.getKey(), entry.getValue());
         }
+        boolean needRebuild = false;
         // cookies
         if (cookies != null) {
             setCookie(cookies);
-            rebuildClient();
+            needRebuild = true;
         }
         // 代理
         if (proxy != null) {
             setProxy(proxy);
+            needRebuild = true;
+        }
+        if (needRebuild) {
             rebuildClient();
         }
         // entity
