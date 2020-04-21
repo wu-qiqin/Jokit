@@ -303,9 +303,10 @@ public class HttpClient implements Closeable {
 
     @Override
     public void close() throws IOException {
-        if (response != null) {
-            response.close();
-        }
+        // FIXME 5.0 和 4.5 有很大的差别。5.0 在 close response 的时候也会消费 InputStream
+//        if (response != null) {
+//            response.close();
+//        }
         if (httpClient != null) {
             httpClient.close();
         }
