@@ -1,6 +1,7 @@
 package com.hujinwen.utils;
 
 import com.hujinwen.entity.Constants;
+import com.hujinwen.tools.SimpleTimeFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -1,4 +1,4 @@
-package com.hujinwen.utils;
+package com.hujinwen.tools;
 
 import java.text.DecimalFormat;
 import java.text.MessageFormat;

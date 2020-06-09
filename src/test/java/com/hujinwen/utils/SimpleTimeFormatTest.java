@@ -1,5 +1,6 @@
 package com.hujinwen.utils;
 
+import com.hujinwen.tools.SimpleTimeFormat;
 import org.junit.jupiter.api.Test;
 
 class SimpleTimeFormatTest {
