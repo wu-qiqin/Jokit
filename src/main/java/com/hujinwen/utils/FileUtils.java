@@ -1,6 +1,7 @@
 package com.hujinwen.utils;
 
 import java.io.File;
+import java.util.regex.Pattern;
 
 /**
  * Created by joe on 2020/4/9
@@ -8,6 +9,8 @@ import java.io.File;
  * 文件相关工具
  */
 public class FileUtils {
+
+    private static final Pattern WIN_FILENAME_NOT_CONTAINS_PATTERN = Pattern.compile("[/\\\\:*?<>|]");
 
     /**
      * 创建文件夹，（检查后）
@@ -36,6 +39,16 @@ public class FileUtils {
             return file.delete();
         }
         return false;
+    }
+
+    /**
+     * 替换掉文件名中，windows不允许出现的字符
+     *
+     * @param filename 文件名
+     * @return 替换后的文件名
+     */
+    public static String replaceCharNotAllowInWinFilename(String filename) {
+        return WIN_FILENAME_NOT_CONTAINS_PATTERN.matcher(filename).replaceAll("");
     }
 
 }
