@@ -9,6 +9,7 @@ import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,18 @@ class HttpClientTest {
 
         final CloseableHttpClient httpClient = HttpClients.createDefault();
         httpClient.execute(httpPost);
+    }
 
+    @Test
+    void bugFix() throws IOException {
+        final HttpClient httpClient = HttpClient.createDefault();
+        final HttpClient httpClient2 = HttpClient.createDefault();
+        final InputStream inputStream = httpClient.doGetAsStream("http://forspeed.onlinedown.net/down/newdown/2/17/Warcraft3_1.24E.rar");
+        final InputStream inputStream1 = httpClient2.doGetAsStream("http://forspeed.onlinedown.net/down/newdown/2/17/Warcraft3_1.24E.rar");
+        httpClient.close();
+        final int read = inputStream1.read();
+        httpClient2.close();
+        System.out.println();
 
     }
 

@@ -195,7 +195,7 @@ public class HttpClient implements Closeable {
             headers = this.headers;
         }
         for (Map.Entry<String, String> entry : headers.entrySet()) {
-            request.setHeader(entry.getKey(), entry.getValue());
+            request.setHeader(entry.getKey(), entry.getValue());  // request setHeader和addHeader的区别是，setHeader会修改同名header
         }
         boolean needRebuild = false;
         // cookies
