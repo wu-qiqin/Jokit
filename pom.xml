@@ -6,7 +6,7 @@
 
     <groupId>com.hujinwen</groupId>
     <artifactId>Jtils</artifactId>
-    <version>1.0.0</version>
+    <version>0.5.1</version>
 
     <dependencies>
         <dependency>
