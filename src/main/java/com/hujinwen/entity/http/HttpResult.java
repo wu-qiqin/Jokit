@@ -17,6 +17,8 @@ import org.apache.logging.log4j.Logger;
 public class HttpResult {
     private static final Logger logger = LogManager.getLogger(HttpResult.class);
 
+    private int respCode;
+
     private Long contentLength;
 
     private String contentEncoding;
@@ -27,7 +29,6 @@ public class HttpResult {
      * 抽取字段
      */
     public void extractField(HttpClientContext context) {
-        System.out.println();
     }
 
     /**
@@ -57,6 +58,8 @@ public class HttpResult {
                 // TODO 补充处理
             }
             this.contentEncoding = contentEncoding;
+            // http resp code
+            this.respCode = response.getCode();
         } catch (ProtocolException e) {
             logger.error(e.getMessage(), e);
         }
@@ -67,4 +70,7 @@ public class HttpResult {
         return contentLength;
     }
 
+    public int getRespCode() {
+        return respCode;
+    }
 }

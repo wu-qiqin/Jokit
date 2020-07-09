@@ -76,7 +76,7 @@ public class HttpClient implements Closeable {
     /**
      * 请求结果保存
      */
-    private HttpResult httpResult = new HttpResult();
+    private final HttpResult httpResult = new HttpResult();
 
 
     private HttpClient() {
@@ -275,6 +275,23 @@ public class HttpClient implements Closeable {
         this.headers.put(key, value);
     }
 
+    /**
+     * 获取响应码
+     */
+    public int getRespCode() {
+        return this.httpResult.getRespCode();
+    }
+
+    /**
+     * 获取当前请求头
+     */
+    public Map<String, String> getReqHeaders() {
+        return this.headers;
+    }
+
+    /**
+     * 获取最近一次请求的响应头
+     */
     public Map<String, String> getRespHeaders() {
         final Map<String, String> headers = new HashMap<>();
 
@@ -284,6 +301,9 @@ public class HttpClient implements Closeable {
         return headers;
     }
 
+    /**
+     * 获取最后一次重定向的路径
+     */
     public String getLastRedirectUrl() {
         final RedirectLocations redirectLocations = context.getRedirectLocations();
         final int size = redirectLocations.size();

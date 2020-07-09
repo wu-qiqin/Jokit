@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 class HttpClientTest {
 
@@ -55,6 +56,15 @@ class HttpClientTest {
         httpClient2.close();
         System.out.println();
 
+    }
+
+    @Test
+    void returnCode() throws IOException {
+        final HttpClient httpClient = HttpClient.createDefault();
+        final String content = httpClient.doGetAsStr("Https://www.baidu.com");
+        final Map<String, String> reqHeaders = httpClient.getReqHeaders();
+        final int respCode = httpClient.getRespCode();
+        System.out.println();
     }
 
 
