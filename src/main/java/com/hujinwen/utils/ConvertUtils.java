@@ -2,6 +2,7 @@ package com.hujinwen.utils;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.EOFException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -15,7 +16,7 @@ public class ConvertUtils {
      * byte[]转为指定类型
      */
     @SuppressWarnings("unchecked")
-    public static <T> Object fromBytes(byte[] bytes, Class<T> clazz) {
+    public static <T> Object fromBytes(byte[] bytes, Class<T> clazz) throws EOFException {
         if (clazz.isAssignableFrom(Integer.class) || clazz.isAssignableFrom(int.class)
                 || clazz.isAssignableFrom(Short.class) || clazz.isAssignableFrom(short.class)) {
             return bytesToInt(bytes);
@@ -39,34 +40,30 @@ public class ConvertUtils {
         return null;
     }
 
-    /**
-     * byte[]转int
-     */
-    public static int bytesToInt(byte[] bytes) {
-        int i = (bytes[0] << 24) & 0xFF000000;
-        i |= (bytes[1] << 16) & 0xFF0000;
-        i |= (bytes[2] << 8) & 0xFF00;
-        i |= bytes[3] & 0xFF;
-        return i;
-    }
-
-    /**
-     * int转byte[]
-     */
     public static byte[] intToBytes(int i) {
         byte[] b = new byte[4];
-        b[0] = (byte) (i >>> 24);
-        b[1] = (byte) (i >>> 16);
-        b[2] = (byte) (i >>> 8);
-        b[3] = (byte) i;
+        b[0] = (byte) ((i >>> 24) & 0xFF);
+        b[1] = (byte) ((i >>> 16) & 0xFF);
+        b[2] = (byte) ((i >>> 8) & 0xFF);
+        b[3] = (byte) ((i) & 0xFF);
         return b;
     }
 
-    /**
-     * long转byte[]
-     *
-     * @see java.io.DataOutputStream
-     */
+    public static int bytesToInt(byte[] bytes) throws EOFException {
+        if (bytes.length != 4) {
+            throw new EOFException();
+        }
+        int ch1 = bytes[0];
+        int ch2 = bytes[1];
+        int ch3 = bytes[2];
+        int ch4 = bytes[3];
+        if ((ch1 | ch2 | ch3 | ch4) < 0) {
+            throw new EOFException();
+        }
+        return ((ch1 << 24) + (ch2 << 16) + (ch3 << 8) + (ch4));
+    }
+
+
     public static byte[] longToBytes(long l) {
         byte[] b = new byte[8];
         b[0] = (byte) (l >>> 56);
@@ -80,12 +77,10 @@ public class ConvertUtils {
         return b;
     }
 
-    /**
-     * byte[]转long
-     *
-     * @see java.io.DataInputStream
-     */
-    public static long bytesToLong(byte[] bytes) {
+    public static long bytesToLong(byte[] bytes) throws EOFException {
+        if (bytes.length != 8) {
+            throw new EOFException();
+        }
         return (((long) bytes[0] << 56) +
                 ((long) (bytes[1] & 255) << 48) +
                 ((long) (bytes[2] & 255) << 40) +
@@ -96,51 +91,39 @@ public class ConvertUtils {
                 (bytes[7] & 255));
     }
 
-    /**
-     * byte[]转char
-     */
-    public static char bytesToChar(byte[] bytes) {
-        char c = (char) ((bytes[0] << 8) & 0xFF00L);
-        c |= (char) (bytes[1] & 0xFFL);
-        return c;
-    }
-
-    /**
-     * byte[]转double
-     */
-    public static double bytesToDouble(byte[] bytes) {
-        return Double.longBitsToDouble(bytesToLong(bytes));
-    }
-
-    /**
-     * byte[]转float
-     */
-    public static float bytesToFloat(byte[] bytes) {
-        return Float.intBitsToFloat(bytesToInt(bytes));
-    }
-
-    /**
-     * char转byte[]
-     */
     public static byte[] charToBytes(char c) {
         byte[] b = new byte[2];
-        b[0] = (byte) (c >>> 8);
-        b[1] = (byte) c;
+        b[0] = (byte) ((c >>> 8) & 0xFF);
+        b[1] = (byte) ((c) & 0xFF);
         return b;
     }
 
-    /**
-     * double转byte[]
-     */
+    public static char bytesToChar(byte[] bytes) throws EOFException {
+        if (bytes.length != 2) {
+            throw new EOFException();
+        }
+        int ch1 = bytes[0];
+        int ch2 = bytes[1];
+        if ((ch1 | ch2) < 0) {
+            throw new EOFException();
+        }
+        return (char) ((ch1 << 8) + (ch2));
+    }
+
     public static byte[] doubleToBytes(double d) {
         return longToBytes(Double.doubleToLongBits(d));
     }
 
-    /**
-     * float转byte[]
-     */
+    public static double bytesToDouble(byte[] bytes) throws EOFException {
+        return Double.longBitsToDouble(bytesToLong(bytes));
+    }
+
     public static byte[] floatToBytes(float f) {
         return intToBytes(Float.floatToIntBits(f));
+    }
+
+    public static float bytesToFloat(byte[] bytes) throws EOFException {
+        return Float.intBitsToFloat(bytesToInt(bytes));
     }
 
 
