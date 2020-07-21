@@ -79,6 +79,12 @@
             <artifactId>isoparser</artifactId>
             <version>1.1.22</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.minio/minio -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>6.0.13</version>
+        </dependency>
     </dependencies>
 
     <build>
