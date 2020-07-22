@@ -57,22 +57,25 @@ public class MysqlClient implements Closeable {
         logger.info("Database changed! current -> {}", db);
     }
 
-    public <T> List<T> select(String sql, Class<T> clazz) throws SQLException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    public <T> List<T> select(String sql, Class<T> clazz) throws SQLException {
         List<T> results = new ArrayList<>();
+        try (
+                PreparedStatement statement = CONNECTIONS.get(db).prepareStatement(sql);
+                ResultSet resultSet = statement.executeQuery()
+        ) {
+            while (resultSet.next()) {
+                final T instance = clazz.newInstance();
 
-        final PreparedStatement statement = CONNECTIONS.get(db).prepareStatement(sql);
-        final ResultSet resultSet = statement.executeQuery();
-
-        while (resultSet.next()) {
-            final T instance = clazz.newInstance();
-
-            for (Field field : ReflectUtils.getDeclaredFields(clazz)) {
-                final String colName = StringUtils.humpToUnderline(field.getName());
-                final Object obj = resultSet.getObject(colName);
-                final Method setMethod = ReflectUtils.findSetMethod(clazz, field);
-                setMethod.invoke(instance, obj);
+                for (Field field : ReflectUtils.getDeclaredFields(clazz)) {
+                    final String colName = StringUtils.humpToUnderline(field.getName());
+                    final Object obj = resultSet.getObject(colName);
+                    final Method setMethod = ReflectUtils.findSetMethod(clazz, field);
+                    setMethod.invoke(instance, obj);
+                }
+                results.add(instance);
             }
-            results.add(instance);
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            logger.error(e.getMessage(), e);
         }
         return results;
     }
