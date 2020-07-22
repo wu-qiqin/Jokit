@@ -1,4 +1,4 @@
-package com.hujinwen.client;
+package com.hujinwen.client.http;
 
 import com.hujinwen.entity.http.HttpProxy;
 import com.hujinwen.entity.http.HttpResult;
