@@ -5,7 +5,6 @@ import com.hujinwen.utils.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -22,7 +21,7 @@ import java.util.Map;
  * <p>
  * TODO 这里待优化，使用连接池
  */
-public class MysqlClient implements Closeable {
+public class MysqlClient implements AutoCloseable {
     private static final Logger logger = LogManager.getLogger(MysqlClient.class);
 
     private String host;
