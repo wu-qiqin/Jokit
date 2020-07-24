@@ -51,8 +51,11 @@ public class MysqlClient implements AutoCloseable {
 
     public void useDB(String db) throws SQLException {
         this.db = db;
-        final Connection connection = DriverManager.getConnection(URL_FORMAT.format(new Object[]{host, port, db}), user, password);
-        CONNECTIONS.put(db, connection);
+
+        if (!CONNECTIONS.containsKey(db)) {
+            final Connection connection = DriverManager.getConnection(URL_FORMAT.format(new Object[]{host, port, db}), user, password);
+            CONNECTIONS.put(db, connection);
+        }
         logger.info("Database changed! current -> {}", db);
     }
 
