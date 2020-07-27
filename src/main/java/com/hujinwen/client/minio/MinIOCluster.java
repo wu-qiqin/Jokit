@@ -1,8 +1,8 @@
 package com.hujinwen.client.minio;
 
 import com.hujinwen.entity.minio.MinIONode;
-import com.hujinwen.exception.minio.MinioInitializeException;
-import com.hujinwen.exception.minio.MinioPutObjectException;
+import com.hujinwen.exceptions.minio.MinioInitializeException;
+import com.hujinwen.exceptions.minio.MinioPutObjectException;
 import com.hujinwen.utils.RandomUtils;
 import io.minio.MinioClient;
 

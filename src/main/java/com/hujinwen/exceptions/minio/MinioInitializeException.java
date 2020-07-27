@@ -1,4 +1,4 @@
-package com.hujinwen.exception.minio;
+package com.hujinwen.exceptions.minio;
 
 /**
  * Created by joe on 2020/3/20
