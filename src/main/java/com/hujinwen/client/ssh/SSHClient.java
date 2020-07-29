@@ -1,4 +1,4 @@
-package com.hujinwen.client.remote;
+package com.hujinwen.client.ssh;
 
 import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.Session;
