@@ -1,5 +1,6 @@
 package com.hujinwen.tools;
 
+import com.hujinwen.utils.RandomUtils;
 import sun.security.action.GetPropertyAction;
 
 import java.io.*;
@@ -8,7 +9,7 @@ import java.security.AccessController;
 /**
  * Created by joe on 2020/6/4
  * <p>
- * 加强版的 RandomAccessFile
+ * 加强版 RandomAccessFile，扩展了一些方法
  */
 public class RandomAccessFilePlus extends RandomAccessFile {
 
@@ -22,9 +23,12 @@ public class RandomAccessFilePlus extends RandomAccessFile {
         super(file, mode);
     }
 
+    /**
+     * 读取一行（使用指定编码）
+     */
     public final String readLine(String charsetName) throws IOException {
         try (
-                final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()
         ) {
             int c = -1;
             boolean eol = false;
@@ -69,10 +73,10 @@ public class RandomAccessFilePlus extends RandomAccessFile {
      * 插入字节
      */
     public void insert(byte[] bytes) throws IOException {
-        final File cacheFile = File.createTempFile("cache", "");
+        final File cacheFile = File.createTempFile(RandomUtils.uuid(), "");
         try (
                 final FileOutputStream outputStream = new FileOutputStream(cacheFile);
-                final FileInputStream inputStream = new FileInputStream(cacheFile);
+                final FileInputStream inputStream = new FileInputStream(cacheFile)
         ) {
             long currentPointer = this.getFilePointer();
 

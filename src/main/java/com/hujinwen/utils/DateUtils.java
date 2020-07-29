@@ -1,6 +1,6 @@
 package com.hujinwen.utils;
 
-import com.hujinwen.entity.TwoTuple;
+import com.hujinwen.entity.tuple.TwoTuple;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

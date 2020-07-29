@@ -24,13 +24,13 @@ import java.util.Map;
 public class MysqlClient implements AutoCloseable {
     private static final Logger logger = LogManager.getLogger(MysqlClient.class);
 
-    private String host;
+    private final String host;
 
-    private String port;
+    private final String port;
 
-    private String user;
+    private final String user;
 
-    private String password;
+    private final String password;
 
     private String db;
 
@@ -72,7 +72,9 @@ public class MysqlClient implements AutoCloseable {
                     final String colName = StringUtils.humpToUnderline(field.getName());
                     final Object obj = resultSet.getObject(colName);
                     final Method setMethod = ReflectUtils.findSetMethod(clazz, field);
-                    setMethod.invoke(instance, obj);
+                    if (setMethod != null) {
+                        setMethod.invoke(instance, obj);
+                    }
                 }
                 results.add(instance);
             }
@@ -88,7 +90,7 @@ public class MysqlClient implements AutoCloseable {
             try {
                 connection.close();
             } catch (SQLException se) {
-                logger.warn("Connection close failed!");
+                logger.warn("Connection close failed!", se);
             }
         }
     }
