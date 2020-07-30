@@ -129,9 +129,6 @@ public class ConvertUtils {
 
     /**
      * 将16进制字符串压缩转换为byte[]
-     *
-     * @param str
-     * @return
      */
     public static byte[] hexToBytes(String str) {
         if (str == null || str.trim().equals("")) {
@@ -149,20 +146,19 @@ public class ConvertUtils {
         return bytes;
     }
 
+
     /**
      * byte[] to hex string
-     *
-     * @param bytes
-     * @return
      */
     public static String bytesToHexStr(byte[] bytes) {
         StringBuilder buf = new StringBuilder(bytes.length * 2);
         for (byte b : bytes) { // 使用String的format方法进行转换
-            buf.append(String.format("%02x", new Integer(b & 0xff)));
+            buf.append(String.format("%02x", b & 0xff));
         }
 
         return buf.toString();
     }
+
 
     public static byte[] hexStrToByte(String value) {
         byte[] bytes = new byte[100];
@@ -190,6 +186,7 @@ public class ConvertUtils {
         }
         return Arrays.copyOfRange(bytes, 0, i);
     }
+
 
     public static String hexDecode(String value) {
         char[] chars = value.toCharArray();

@@ -42,7 +42,7 @@ public class SimpleTimeFormat {
     /**
      * numberFormat 对象
      */
-    private DecimalFormat numberFormat = new DecimalFormat("##");
+    private final DecimalFormat numberFormat = new DecimalFormat("##");
 
 
     public SimpleTimeFormat() {
@@ -261,7 +261,7 @@ public class SimpleTimeFormat {
         Collections.sort(units);
 
         for (Long tag : units) {
-            Long value = duration / TimeFormatSymBols.UNITS_MILLS[tag.intValue()];
+            long value = duration / TimeFormatSymBols.UNITS_MILLS[tag.intValue()];
             duration = duration % TimeFormatSymBols.UNITS_MILLS[tag.intValue()];
             results[tag.intValue()] = value;
         }

@@ -93,7 +93,7 @@ public class UrlUtils {
      *
      * @param url url
      */
-    public static String extraFilename(String url) {
+    public static String extraFileName(String url) {
         int index = url.indexOf("?");
         if (index != -1) {
             url = url.substring(0, index);

@@ -18,9 +18,9 @@ import java.util.regex.Pattern;
 public class TimeUtils {
     private static final Logger logger = LogManager.getLogger(TimeUtils.class);
 
-    private static ThreadLocal<SimpleTimeFormat> timeFormatHolder = ThreadLocal.withInitial(SimpleTimeFormat::new);
+    private static final ThreadLocal<SimpleTimeFormat> timeFormatHolder = ThreadLocal.withInitial(SimpleTimeFormat::new);
 
-    private static List<TimeFormat> normalFormat = new ArrayList<>();
+    private static final List<TimeFormat> normalFormat = new ArrayList<>();
 
     static {  // TODO *** 规则添加、精准时间放前面，分类放好 ***
         // 时分秒
@@ -122,9 +122,9 @@ public class TimeUtils {
 
     private static class TimeFormat {
         // 抽取正则表达式
-        private Pattern regExp;
+        private final Pattern regExp;
         // 时间格式pattern
-        private String pattern;
+        private final String pattern;
 
         TimeFormat(Pattern regExp, String pattern) {
             this.regExp = regExp;

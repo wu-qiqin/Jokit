@@ -8,6 +8,10 @@ import java.lang.reflect.Array;
  * 数组相关工具，继承了 org.apache.commons.lang3.ArrayUtils，作为其补充
  */
 public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
+
+
+    @SafeVarargs
+    @SuppressWarnings("unchecked")
     public static <T> T[] union(T[]... tts) {
         if (tts == null || tts.length == 0) {
             return null;
@@ -35,6 +39,7 @@ public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
         return result;
     }
 
+
     public static byte[] union(byte[]... tts) {
         if (tts == null || tts.length == 0) {
             return null;
@@ -60,6 +65,7 @@ public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
         }
         return result;
     }
+
 
     public static short[] union(short[]... tts) {
         if (tts == null || tts.length == 0) {
@@ -87,6 +93,7 @@ public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
         return result;
     }
 
+
     public static int[] union(int[]... tts) {
         if (tts == null || tts.length == 0) {
             return null;
@@ -112,6 +119,7 @@ public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
         }
         return result;
     }
+
 
     public static long[] union(long[]... tts) {
         if (tts == null || tts.length == 0) {
@@ -139,6 +147,7 @@ public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
         return result;
     }
 
+
     public static char[] union(char[]... tts) {
         if (tts == null || tts.length == 0) {
             return null;
@@ -164,4 +173,5 @@ public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
         }
         return result;
     }
+
 }
