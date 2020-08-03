@@ -160,6 +160,13 @@ public class FileUtils {
     }
 
     /**
+     * 以inputstream的形式读取resource下的文件
+     */
+    public static InputStream getResourceAsStream(String filename) {
+        return FileUtils.class.getClassLoader().getResourceAsStream(filename);
+    }
+
+    /**
      * 读取properties文件内容，以properties对象返回
      */
     public static Properties readProperties(String filepath) throws IOException {
