@@ -5,6 +5,7 @@ import com.hujinwen.entity.enums.FileType;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,6 +24,8 @@ import java.util.regex.Pattern;
  */
 public class FileUtils {
     private static final Logger logger = LogManager.getLogger(FileUtils.class);
+
+    private static final Yaml YAML_LOADER = new Yaml();
 
     private static final Pattern WIN_FILENAME_NOT_CONTAINS_PATTERN = Pattern.compile("[/\\\\:*?<>|]");
 
@@ -177,6 +180,13 @@ public class FileUtils {
             prop.load(fileInputStream);
         }
         return prop;
+    }
+
+    /**
+     * 加载yaml文件
+     */
+    public static <T> T loadYamlFile(InputStream inputStream, Class<T> clazz) {
+        return YAML_LOADER.loadAs(inputStream, clazz);
     }
 
 }
