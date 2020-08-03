@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.hujinwen</groupId>
-    <artifactId>JToolkit</artifactId>
+    <artifactId>Jokit</artifactId>
     <version>0.5.4</version>
 
     <dependencies>
