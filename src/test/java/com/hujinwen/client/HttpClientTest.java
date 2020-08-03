@@ -5,6 +5,7 @@ import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.junit.jupiter.api.Test;
@@ -65,6 +66,20 @@ class HttpClientTest {
         final String content = httpClient.doGetAsStr("Https://www.baidu.com");
         final Map<String, String> reqHeaders = httpClient.getReqHeaders();
         final int respCode = httpClient.getRespCode();
+        System.out.println();
+    }
+
+    /**
+     * post获取输入流测试
+     */
+    @Test
+    void doPostAsStreamTest() {
+        final HttpClient httpClient = HttpClient.createDefault();
+        final HttpEntity httpEntity = new UrlEncodedFormEntity(new ArrayList<NameValuePair>() {{
+            add(new BasicNameValuePair("url", "https://www.bilibili.com/video/BV1Nt4y1D7pW?spm_id_from=333.851.b_7265706f7274466972737431.7"));
+
+        }});
+        final InputStream inputStream = httpClient.doPostAsStream("http://10.0.2.55:8081/bilibili_jpg", httpEntity);
         System.out.println();
     }
 

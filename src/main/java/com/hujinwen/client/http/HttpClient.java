@@ -9,6 +9,7 @@ import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.cookie.BasicCookieStore;
+import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
 import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
@@ -17,19 +18,19 @@ import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.cookie.BasicClientCookie;
 import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.client5.http.protocol.RedirectLocations;
-import org.apache.hc.core5.http.Header;
-import org.apache.hc.core5.http.HttpEntity;
-import org.apache.hc.core5.http.HttpHost;
-import org.apache.hc.core5.http.ParseException;
+import org.apache.hc.core5.http.*;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
+import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -167,6 +168,26 @@ public class HttpClient implements Closeable {
     public InputStream doGetAsStream(String url, Map<String, String> headers, Map<String, String> cookies) {
         return doGetAsStream(url, headers, cookies, null);
     }
+
+    /**
+     * overwrite
+     */
+    public InputStream doPostAsStream(String url, HttpEntity entity) {
+        return doPostAsStream(url, null, null, null, entity);
+    }
+
+    /**
+     * overwrite
+     */
+    public InputStream doPostAsStream(String url, Map<String, String> data) {
+        final List<NameValuePair> nameValuePairList = new ArrayList<>();
+        for (Map.Entry<String, String> item : data.entrySet()) {
+            nameValuePairList.add(new BasicNameValuePair(item.getKey(), item.getValue()));
+        }
+        final UrlEncodedFormEntity entity = new UrlEncodedFormEntity(nameValuePairList);
+        return doPostAsStream(url, null, null, null, entity);
+    }
+
 
     /**
      * post请求，返回输入流
