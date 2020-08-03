@@ -1,6 +1,6 @@
-# JToolkit
+# Jokit
 
-> 实用工具类汇总
+> Java toolkit，java工具包，包含了很多实用常用的工具方法。
 
 [TOC]
 
