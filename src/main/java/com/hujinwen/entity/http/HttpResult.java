@@ -10,7 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Created by joe on 2020/4/11
+ * Created by hu-jinwen on 2020/4/11
  * <p>
  * http结果保存对象
  */

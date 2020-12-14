@@ -1,7 +1,7 @@
 package com.hujinwen.entity.minio;
 
 /**
- * Created by joe on 2020/3/26
+ * Created by hu-jinwen on 2020/3/26
  */
 public class MinIONode {
 

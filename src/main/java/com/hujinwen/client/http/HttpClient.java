@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by joe on 2020/4/9
+ * Created by hu-jinwen on 2020/4/9
  */
 public class HttpClient implements Closeable {
     private static final Logger logger = LogManager.getLogger(HttpClient.class);

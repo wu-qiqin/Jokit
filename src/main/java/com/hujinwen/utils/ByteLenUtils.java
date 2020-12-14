@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Create by joe on 2019/2/13
+ * Created by hu-jinwen on 2019/2/13
  * <p>
  * 字节长度转换工具
  */

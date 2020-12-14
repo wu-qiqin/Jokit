@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * Created by joe on 2020/2/27
+ * Created by hu-jinwen on 2020/2/27
  * <p>
  * 图片相关工具
  */

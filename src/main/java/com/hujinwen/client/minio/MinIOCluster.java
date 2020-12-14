@@ -9,7 +9,7 @@ import io.minio.MinioClient;
 import java.io.InputStream;
 
 /**
- * Created by joe on 2020/3/20
+ * Created by hu-jinwen on 2020/3/20
  * <p>
  * minio 集群
  */

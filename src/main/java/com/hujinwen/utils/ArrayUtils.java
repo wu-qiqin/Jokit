@@ -3,7 +3,7 @@ package com.hujinwen.utils;
 import java.lang.reflect.Array;
 
 /**
- * Created by joe on 2020/4/9
+ * Created by hu-jinwen on 2020/4/9
  * <p>
  * 数组相关工具，继承了 org.apache.commons.lang3.ArrayUtils，作为其补充
  */

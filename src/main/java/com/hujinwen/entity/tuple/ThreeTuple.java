@@ -1,7 +1,7 @@
 package com.hujinwen.entity.tuple;
 
 /**
- * Created by joe on 2020/7/29
+ * Created by hu-jinwen on 2020/7/29
  * <p>
  * 三元组
  */

@@ -20,7 +20,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 /**
- * Created by joe on 2020/6/23
+ * Created by hu-jinwen on 2020/6/23
  * <p>
  * 媒体文件相关
  * <p>

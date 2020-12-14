@@ -4,11 +4,20 @@ import org.junit.jupiter.api.Test;
 
 class ReflectUtilsTest {
 
-    /**
-     * 查找get set方法
-     */
+
     @Test
-    void findGetSetMethod() {
+    void forceSet() throws NoSuchFieldException, IllegalAccessException {
+        final TestClass test = new TestClass();
+
+        ReflectUtils.forceSet(test, "testName", "TestName");
+        System.out.println();
+    }
+
+
+    class TestClass {
+
+        private final String testName = "";
+
     }
 
 

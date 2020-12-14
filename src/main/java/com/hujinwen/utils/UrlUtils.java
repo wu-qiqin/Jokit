@@ -3,7 +3,7 @@ package com.hujinwen.utils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Created by joe on 2020/4/8
+ * Created by hu-jinwen on 2020/4/8
  * <p>
  * url相关工具类
  */

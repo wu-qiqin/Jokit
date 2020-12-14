@@ -8,7 +8,7 @@ import java.security.MessageDigest;
 import java.util.BitSet;
 
 /**
- * Created by joe on 2020/4/9
+ * Created by hu-jinwen on 2020/4/9
  * <p>
  * 加密解密相关工具包
  */

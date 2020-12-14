@@ -1,7 +1,7 @@
 package com.hujinwen.entity;
 
 /**
- * Created by joe on 2020/5/13
+ * Created by hu-jinwen on 2020/5/13
  */
 public interface Constants {
     interface TimeFormat {

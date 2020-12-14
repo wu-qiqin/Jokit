@@ -1,7 +1,7 @@
 package com.hujinwen.utils;
 
 /**
- * Created by joe on 2020/7/22
+ * Created by hu-jinwen on 2020/7/22
  */
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
 

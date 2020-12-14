@@ -1,7 +1,7 @@
 package com.hujinwen.entity.http;
 
 /**
- * Created by joe on 2020/4/10
+ * Created by hu-jinwen on 2020/4/10
  */
 public interface HttpConstants {
     public static final String CONTENT_RANGE = "Content-Range";

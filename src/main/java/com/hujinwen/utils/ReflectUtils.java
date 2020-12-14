@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Created by joe on 2020/7/22
+ * Created by hu-jinwen on 2020/7/22
  * <p>
  * 反射工具类
  */
@@ -136,6 +136,22 @@ public class ReflectUtils {
             firstChar = Character.toUpperCase(firstChar);
         }
         return "get" + firstChar + fieldName.substring(1);
+    }
+
+    /**
+     * 强行设置 field 的值
+     * 无视 private、final
+     */
+    public static void forceSet(Object obj, String fieldName, Object value) throws NoSuchFieldException, IllegalAccessException {
+        final Field field = obj.getClass().getDeclaredField(fieldName);
+
+        field.setAccessible(true);
+
+        final Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
+        field.set(obj, value);
     }
 
 

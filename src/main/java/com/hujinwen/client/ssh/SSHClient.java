@@ -14,7 +14,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by joe on 2020/4/2
+ * Created by hu-jinwen on 2020/4/2
  */
 public class SSHClient implements AutoCloseable {
     private static final Logger logger = LogManager.getLogger(SSHClient.class);

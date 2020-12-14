@@ -7,7 +7,7 @@ import java.io.*;
 import java.security.AccessController;
 
 /**
- * Created by joe on 2020/6/4
+ * Created by hu-jinwen on 2020/6/4
  * <p>
  * 加强版 RandomAccessFile，扩展了一些方法
  */

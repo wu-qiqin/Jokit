@@ -3,7 +3,7 @@ package com.hujinwen.utils;
 import java.text.MessageFormat;
 
 /**
- * Created by joe on 2020/4/3
+ * Created by hu-jinwen on 2020/4/3
  * <p>
  * 邮件中的小工具
  */

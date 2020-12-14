@@ -1,7 +1,7 @@
 package com.hujinwen.entity.enums;
 
 /**
- * Created by joe on 2020/3/20
+ * Created by hu-jinwen on 2020/3/20
  * <p>
  * 文件 type 对应的 stream 头编码
  * 未全部列举，参考 https://app.yinxiang.com/shard/s20/nl/18962043/3dde50cd-e239-465f-8d14-b4878e3f9ac6

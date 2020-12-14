@@ -1,7 +1,7 @@
 package com.hujinwen.exceptions.ssh;
 
 /**
- * Created by joe on 2020/7/27
+ * Created by hu-jinwen on 2020/7/27
  * <p>
  * ssh命令执行异常（执行失败）
  */

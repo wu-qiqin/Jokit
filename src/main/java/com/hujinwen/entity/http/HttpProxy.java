@@ -1,7 +1,7 @@
 package com.hujinwen.entity.http;
 
 /**
- * Created by joe on 2020/4/10
+ * Created by hu-jinwen on 2020/4/10
  * <p>
  * http请求的代理
  */
