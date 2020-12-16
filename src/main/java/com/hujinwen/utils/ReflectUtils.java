@@ -1,6 +1,7 @@
 package com.hujinwen.utils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
@@ -141,17 +142,47 @@ public class ReflectUtils {
     /**
      * 强行设置 field 的值
      * 无视 private、final
+     *
+     * @param obj       操作的对象
+     * @param fieldName 字段名称
+     * @param value     需要设置的值
      */
     public static void forceSet(Object obj, String fieldName, Object value) throws NoSuchFieldException, IllegalAccessException {
         final Field field = obj.getClass().getDeclaredField(fieldName);
-
-        field.setAccessible(true);
-
+        if (!field.isAccessible()) {
+            field.setAccessible(true);
+        }
         final Field modifiersField = Field.class.getDeclaredField("modifiers");
-        modifiersField.setAccessible(true);
+        if (!modifiersField.isAccessible()) {
+            modifiersField.setAccessible(true);
+        }
         modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
 
         field.set(obj, value);
+    }
+
+    public static Object forceInvoke(Object obj, String methodName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        final Method method = obj.getClass().getDeclaredMethod(methodName);
+        if (!method.isAccessible()) {
+            method.setAccessible(true);
+        }
+        return method.invoke(obj);
+    }
+
+    /**
+     * 强行执行某个方法
+     *
+     * @param obj         操作的对象
+     * @param methodName  方法名称
+     * @param paramsClazz 参数类型数组
+     * @param params      方法执行传入的参数
+     */
+    public static Object forceInvoke(Object obj, String methodName, Class<?>[] paramsClazz, Object[] params) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        final Method method = obj.getClass().getDeclaredMethod(methodName, paramsClazz);
+        if (!method.isAccessible()) {
+            method.setAccessible(true);
+        }
+        return method.invoke(obj, params);
     }
 
 
