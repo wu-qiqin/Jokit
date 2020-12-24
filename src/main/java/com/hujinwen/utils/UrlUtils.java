@@ -1,6 +1,11 @@
 package com.hujinwen.utils;
 
+import com.hujinwen.entity.enums.CharsetType;
 import org.apache.commons.lang3.StringUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 /**
  * Created by hu-jinwen on 2020/4/8
@@ -104,4 +109,55 @@ public class UrlUtils {
         int index1 = url.lastIndexOf("/");
         return url.substring(index1 + 1);
     }
+
+    /**
+     * url编码
+     */
+    public static String urlEncode(String url, String enc) throws UnsupportedEncodingException {
+        return URLEncoder.encode(url, enc);
+    }
+
+    /**
+     * url解码
+     */
+    public static String urlDecode(String url, String enc) throws UnsupportedEncodingException {
+        return URLDecoder.decode(url, enc);
+    }
+
+    public static String encodeUtf8(String str) {
+        try {
+            // 使用内置编码时，不应抛出 UnsupportedEncodingException
+            return URLEncoder.encode(str, CharsetType.UTF8.charsetName);
+        } catch (UnsupportedEncodingException uee) {
+            throw new RuntimeException(uee);
+        }
+    }
+
+    public static String decodeUtf8(String str) {
+        try {
+            // 使用内置编码时，不应抛出 UnsupportedEncodingException
+            return URLDecoder.decode(str, CharsetType.UTF8.charsetName);
+        } catch (UnsupportedEncodingException uee) {
+            throw new RuntimeException(uee);
+        }
+    }
+
+    public static String encodeGBK(String str) {
+        try {
+            // 使用内置编码时，不应抛出 UnsupportedEncodingException
+            return URLEncoder.encode(str, CharsetType.GBK.charsetName);
+        } catch (UnsupportedEncodingException uee) {
+            throw new RuntimeException(uee);
+        }
+    }
+
+    public static String encodeGB2312(String str) {
+        try {
+            // 使用内置编码时，不应抛出 UnsupportedEncodingException
+            return URLEncoder.encode(str, CharsetType.GB2312.charsetName);
+        } catch (UnsupportedEncodingException uee) {
+            throw new RuntimeException(uee);
+        }
+    }
+
 }

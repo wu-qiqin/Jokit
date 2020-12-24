@@ -7,4 +7,8 @@ public interface Constants {
     interface TimeFormat {
         String DEFAULT_FORMAT = "hh:mm:ss";
     }
+
+    interface RegGroupName {
+        String PAGE = "PAGE";
+    }
 }
