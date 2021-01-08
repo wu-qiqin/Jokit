@@ -359,11 +359,11 @@ public class DateUtils {
     /**
      * 自动递（增/减）日期中的时间字符串
      *
-     * @param dateStr 包含时间的字符串
-     * @param field   参考Calender Field，例：Calendar.DAY_OF_MONTH
-     * @param offset  偏移量（正整数 / 负整数）
+     * @param dateStr       包含时间的字符串
+     * @param calenderField 参考Calender Field，例：Calendar.DAY_OF_MONTH
+     * @param offset        偏移量（正整数 / 负整数）
      */
-    public static String addDate(String dateStr, int field, int offset) {
+    public static String addDate(String dateStr, int calenderField, int offset) {
         final TwoTuple<Matcher, DateFormat> normalMatcher = findNormalMatcher(dateStr);
 
         if (normalMatcher == null) {
@@ -376,7 +376,7 @@ public class DateUtils {
 
         final Calendar calendar = calendarHolder.get();
         calendar.setTime(currentDate);
-        calendar.add(field, offset);
+        calendar.add(calenderField, offset);
 
         String newDateStr = format(calendar.getTime(), dateFormat.timeFormat);
         return dateStr.substring(0, matcher.start(0)) + newDateStr + dateStr.substring(matcher.end(0));
@@ -385,14 +385,14 @@ public class DateUtils {
     /**
      * 计算Date的偏移量（几天前/后，几年前/后，几月前/后）
      *
-     * @param date   需要计算的日期
-     * @param field  参考Calender Field，例：Calendar.DAY_OF_MONTH
-     * @param offset 偏移量（正整数 / 负整数）
+     * @param date          需要计算的日期
+     * @param calenderField 参考Calender Field，例：Calendar.DAY_OF_MONTH
+     * @param offset        偏移量（正整数 / 负整数）
      */
-    public static Date addDate(Date date, int field, int offset) {
+    public static Date addDate(Date date, int calenderField, int offset) {
         Calendar calendar = calendarHolder.get();
         calendar.setTime(date);
-        calendar.add(field, offset);
+        calendar.add(calenderField, offset);
         return calendar.getTime();
     }
 
@@ -417,11 +417,59 @@ public class DateUtils {
     }
 
     /**
+     * 获取昨天某一时刻的 Date 对象，不限分钟、秒
+     */
+    public static Date YESTERDAY() {
+        return addDate(new Date(), Calendar.DAY_OF_MONTH, -1);
+    }
+
+    /**
+     * 获取今天某一时刻的 Date 对象，不限分钟、秒
+     */
+    public static Date TODAY() {
+        return new Date();
+    }
+
+    /**
+     * 获取明天某一时刻的 Date 对象，不限分钟、秒
+     */
+    public static Date TOMORROW() {
+        return addDate(new Date(), Calendar.DAY_OF_MONTH, 1);
+    }
+
+    /**
+     * 一天的开始（毫秒）
+     */
+    public static long beginOfDay(Date date) {
+        final Calendar calendar = calendarHolder.get();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
+    }
+
+    /**
+     * 一天的结束（毫秒）
+     */
+    public static long endOfDay(Date date) {
+        final Calendar calendar = calendarHolder.get();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis() - 1;
+    }
+
+    /**
      * 日期格式类
      */
     private static class DateFormat {
 
-        private Pattern regExp;  // 时间正则
+        private final Pattern regExp;  // 时间正则
         private String timeFormat;  // 时间格式
         private Locale locale;  // 区域
         private ExactDate exactDate;  // 确切的日期
