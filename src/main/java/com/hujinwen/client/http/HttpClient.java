@@ -206,6 +206,23 @@ public class HttpClient implements Closeable {
         return null;
     }
 
+    /**
+     * port请求，返回响应字符串
+     */
+    public String doPostAsStr(String url, Map<String, String> headers, Map<String, String> cookies, HttpProxy proxy, HttpEntity entity) {
+        final HttpPost httpPost = new HttpPost(url);
+
+        try {
+            exec(httpPost, headers, cookies, proxy, entity);
+            if (response != null) {
+                return EntityUtils.toString(response.getEntity());
+            }
+        } catch (IOException | ParseException ioe) {
+            logger.error(ioe.getMessage(), ioe);
+        }
+        return null;
+    }
+
 
     /**
      * 执行

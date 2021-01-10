@@ -1,12 +1,17 @@
 package com.hujinwen.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.hujinwen.client.http.HttpClient;
+import com.hujinwen.utils.JsonUtils;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.NameValuePair;
+import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
 import org.junit.jupiter.api.Test;
 
@@ -83,5 +88,28 @@ class HttpClientTest {
         System.out.println();
     }
 
+
+    /**
+     * HttpClient 做 application/json 请求
+     */
+    @Test
+    void doPostAsStr() throws JsonProcessingException {
+        final HttpClient httpClient = HttpClient.createDefault();
+
+        final ObjectNode objectNode = JsonUtils.newObjectNode();
+        objectNode.put("title", "This is Title");
+        objectNode.put("text", "这是一段\n测试内容");
+
+        final StringEntity stringEntity = new StringEntity(JsonUtils.toString(objectNode), ContentType.create("application/json", "UTF-8"));
+
+        final InputStream inputStream = httpClient.doPostAsStream("https://open.feishu.cn/open-apis/bot/hook/76c87ba3-d979-43d1-99cb-5fea9cf3f36c", stringEntity);
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+
+        final String hello = System.getProperty("PATH", "Hello");
+        System.out.println();
+    }
 
 }
