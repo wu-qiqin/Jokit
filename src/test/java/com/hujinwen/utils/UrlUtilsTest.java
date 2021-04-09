@@ -10,4 +10,10 @@ class UrlUtilsTest {
         System.out.println();
     }
 
+    @Test
+    void urlEncodeTest() {
+        final String sss = UrlUtils.encodeUtf8("");
+        System.out.println();
+    }
+
 }
