@@ -8,6 +8,7 @@ import org.apache.hc.client5.http.auth.AuthScope;
 import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.cookie.BasicCookieStore;
 import org.apache.hc.client5.http.entity.UrlEncodedFormEntity;
 import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by hu-jinwen on 2020/4/9
@@ -65,6 +67,11 @@ public class HttpClient implements Closeable {
     private final HttpClientBuilder clientBuilder = HttpClients.custom();
 
     /**
+     * request config builder
+     */
+    private final RequestConfig.Builder reqConfBuilder = RequestConfig.custom();
+
+    /**
      * 提供验证凭据
      */
     private final BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
@@ -81,7 +88,10 @@ public class HttpClient implements Closeable {
 
 
     private HttpClient() {
-        // TODO 这里可以做一些有用的事情
+        // 默认超时时间设置
+        reqConfBuilder.setConnectTimeout(10, TimeUnit.SECONDS);
+        reqConfBuilder.setConnectionRequestTimeout(10, TimeUnit.SECONDS);
+        reqConfBuilder.setResponseTimeout(10, TimeUnit.SECONDS);
     }
 
     public static HttpClient createDefault() {
@@ -100,6 +110,7 @@ public class HttpClient implements Closeable {
      */
     public String doGetAsStr(String url, Map<String, String> headers, Map<String, String> cookies, HttpProxy proxy) {
         final HttpGet httpGet = new HttpGet(url);
+        httpGet.setConfig(reqConfBuilder.build());
         try {
             exec(httpGet, headers, cookies, proxy, null);
             return EntityUtils.toString(response.getEntity(), "utf-8");
@@ -136,6 +147,7 @@ public class HttpClient implements Closeable {
      */
     public InputStream doGetAsStream(String url, Map<String, String> headers, Map<String, String> cookies, HttpProxy proxy) {
         final HttpGet httpGet = new HttpGet(url);
+        httpGet.setConfig(reqConfBuilder.build());
         try {
             exec(httpGet, headers, cookies, proxy, null);
             if (response != null) {
@@ -194,7 +206,7 @@ public class HttpClient implements Closeable {
      */
     public InputStream doPostAsStream(String url, Map<String, String> headers, Map<String, String> cookies, HttpProxy proxy, HttpEntity entity) {
         final HttpPost httpPost = new HttpPost(url);
-
+        httpPost.setConfig(reqConfBuilder.build());
         try {
             exec(httpPost, headers, cookies, proxy, entity);
             if (response != null) {
@@ -211,7 +223,7 @@ public class HttpClient implements Closeable {
      */
     public String doPostAsStr(String url, Map<String, String> headers, Map<String, String> cookies, HttpProxy proxy, HttpEntity entity) {
         final HttpPost httpPost = new HttpPost(url);
-
+        httpPost.setConfig(reqConfBuilder.build());
         try {
             exec(httpPost, headers, cookies, proxy, entity);
             if (response != null) {
@@ -358,6 +370,18 @@ public class HttpClient implements Closeable {
         return httpResult.getContentLength();
     }
 
+
+    public void setConnectTimeout(long connectTimeout, TimeUnit timeUnit) {
+        reqConfBuilder.setConnectTimeout(connectTimeout, timeUnit);
+    }
+
+    public void setConnectionRequestTimeout(long connectionRequestTimeout, TimeUnit timeUnit) {
+        reqConfBuilder.setConnectionRequestTimeout(connectionRequestTimeout, timeUnit);
+    }
+
+    public void setResponseTimeout(long responseTimeout, TimeUnit timeUnit) {
+        reqConfBuilder.setResponseTimeout(responseTimeout, timeUnit);
+    }
 
     @Override
     public void close() throws IOException {

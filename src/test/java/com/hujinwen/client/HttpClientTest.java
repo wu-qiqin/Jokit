@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 class HttpClientTest {
 
@@ -104,6 +105,23 @@ class HttpClientTest {
 
         final InputStream inputStream = httpClient.doPostAsStream("https://open.feishu.cn/open-apis/bot/hook/76c87ba3-d979-43d1-99cb-5fea9cf3f36c", stringEntity);
         System.out.println();
+    }
+
+    /**
+     * HttpClient5 3中不同的timeout配置
+     */
+    @Test
+    void timeoutTest() {
+        try {
+            final HttpClient httpClient = HttpClient.createDefault();
+            httpClient.setConnectTimeout(3, TimeUnit.SECONDS);
+            httpClient.setConnectionRequestTimeout(3, TimeUnit.SECONDS);
+            httpClient.setResponseTimeout(3, TimeUnit.SECONDS);
+            final String content = httpClient.doGetAsStr("Https://127.127.127.127/asdf/afsdf");
+            System.out.println();
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
