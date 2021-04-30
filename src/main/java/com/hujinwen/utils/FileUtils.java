@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -160,6 +162,21 @@ public class FileUtils {
      */
     public static String getResourcePath() {
         return Objects.requireNonNull(FileUtils.class.getClassLoader().getResource("")).getPath();
+    }
+
+    /**
+     * 获取resource绝对路径
+     */
+    public static File getResourceFile(String filename) {
+        File resourceFile = null;
+        final URL url = FileUtils.class.getClassLoader().getResource(filename);
+        if (url != null) {
+            try {
+                resourceFile = new File(url.toURI());
+            } catch (URISyntaxException ignored) {
+            }
+        }
+        return resourceFile;
     }
 
     /**
