@@ -21,6 +21,8 @@ public class SSHClient implements AutoCloseable {
 
     private String host;
 
+    private int port;
+
     private String user;
 
     private String password;
@@ -29,16 +31,24 @@ public class SSHClient implements AutoCloseable {
 
     public SSHClient(String host, String user, String password) throws IOException {
         this.host = host;
+        this.port = 22;
         this.user = user;
         this.password = password;
         sshConnect();
+    }
+
+    public SSHClient(String host, int port, String user, String password) {
+        this.host = host;
+        this.port = port;
+        this.user = user;
+        this.password = password;
     }
 
     /**
      * ssh连接设备
      */
     private void sshConnect() throws IOException {
-        this.connection = new Connection(host);
+        this.connection = new Connection(host, port);
         this.connection.connect();
 
         final boolean isAuthenticated = this.connection.authenticateWithPassword(user, password);
@@ -59,7 +69,7 @@ public class SSHClient implements AutoCloseable {
         final StringBuilder sb = new StringBuilder();
         final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-        new Thread(() -> {
+        Thread execThread = new Thread(() -> {
             Session session = null;
             int errCount = 0;
             while (errCount++ < 3) {
@@ -97,11 +107,12 @@ public class SSHClient implements AutoCloseable {
                     }
                 }
             }
-        }).start();
-
+        });
+        execThread.start();
         try {
             final boolean isSuccess = countDownLatch.await(timeout, TimeUnit.MILLISECONDS);
             if (!isSuccess) {
+                execThread.interrupt();
                 throw new SSHCmdExecException();
             }
         } catch (InterruptedException ignored) {
