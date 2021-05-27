@@ -30,18 +30,15 @@ public class SSHClient implements AutoCloseable {
     private Connection connection;
 
     public SSHClient(String host, String user, String password) throws IOException {
-        this.host = host;
-        this.port = 22;
-        this.user = user;
-        this.password = password;
-        sshConnect();
+        this(host, 22, user, password);
     }
 
-    public SSHClient(String host, int port, String user, String password) {
+    public SSHClient(String host, int port, String user, String password) throws IOException {
         this.host = host;
         this.port = port;
         this.user = user;
         this.password = password;
+        sshConnect();
     }
 
     /**
@@ -55,7 +52,7 @@ public class SSHClient implements AutoCloseable {
         if (!isAuthenticated) {
             throw new IOException("Authentication failed");
         }
-        logger.info("SSH connected host -> {}", host);
+        logger.info("SSH connected! -> {}:{}", host, port);
     }
 
     /**
