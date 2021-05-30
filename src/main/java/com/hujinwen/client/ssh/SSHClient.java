@@ -138,8 +138,13 @@ public class SSHClient implements AutoCloseable {
         return exec(cmd, 30, timeout);
     }
 
+
     public String getHost() {
         return host;
+    }
+
+    public int getPort() {
+        return port;
     }
 
     public String getUser() {
@@ -148,6 +153,10 @@ public class SSHClient implements AutoCloseable {
 
     public String getPassword() {
         return password;
+    }
+
+    public Connection getConnection() {
+        return connection;
     }
 
     public void close() {
