@@ -15,17 +15,50 @@
         </repository>
     </repositories>
 
+    <properties>
+        <slf4j.version>1.7.30</slf4j.version>  <!-- slf4j的版本，不可过高，与log4j有兼容性的问题 -->
+        <log4j.version>2.14.1</log4j.version>
+    </properties>
+
     <dependencies>
+        <!-- 导入slf4j的接口包以及对应日志框架的驱动包 -->
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <!--用于slf4j与log4j2保持桥接 -->
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.13.2</version>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <scope>runtime</scope>
+            <version>${log4j.version}</version>
         </dependency>
+        <!-- 导入日志框架核心包与接口包 -->
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.13.2</version>
+            <scope>runtime</scope>
+            <version>${log4j.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <!--使用log4j2的AsyncLogger时需要包含disruptor -->
+        <!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <scope>runtime</scope>
+            <version>3.4.2</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>

@@ -161,7 +161,9 @@ public class FileUtils {
      * 获取resource绝对路径
      */
     public static String getResourcePath() {
-        return Objects.requireNonNull(FileUtils.class.getClassLoader().getResource("")).getPath();
+        ClassLoader contextCL = Thread.currentThread().getContextClassLoader();
+        ClassLoader loader = contextCL == null ? FileUtils.class.getClassLoader() : contextCL;
+        return Objects.requireNonNull(loader.getResource("")).getPath();
     }
 
     /**
