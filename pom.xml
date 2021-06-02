@@ -6,7 +6,7 @@
 
     <groupId>com.hujinwen</groupId>
     <artifactId>Jokit</artifactId>
-    <version>0.6.5</version>
+    <version>0.7.0</version>
 
     <repositories>
         <repository>
