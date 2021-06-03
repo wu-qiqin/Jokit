@@ -20,6 +20,14 @@ public class ClassUtils extends org.apache.commons.lang3.ClassUtils {
      */
     private static final Pattern SLASH_PATTERN = Pattern.compile("[/\\\\]");
 
+    public static Class<?>[] scanClass() {
+        return scanClass(PathUtils.getResourcePath());
+    }
+
+    public static Class<?>[] scanClass(ClassFilter classFilter) {
+        return scanClass(PathUtils.getResourcePath(), classFilter);
+    }
+
     public static Class<?>[] scanClass(File rootFile) {
         return scanClass(rootFile, null);
     }
@@ -37,6 +45,14 @@ public class ClassUtils extends org.apache.commons.lang3.ClassUtils {
     }
 
 
+    /**
+     * 扫描class
+     *
+     * @param pathFile
+     * @param rootPath
+     * @param classNames
+     * @param classFilter
+     */
     private static Class<?>[] scanClass(File pathFile, String rootPath, Set<Class<?>> classNames, ClassFilter classFilter) {
         if (pathFile == null) {
             return classNames.toArray(new Class<?>[0]);
@@ -75,13 +91,9 @@ public class ClassUtils extends org.apache.commons.lang3.ClassUtils {
     public interface ClassFilter {
 
         /**
-         *
+         * 扫描项目中所有类时，对类属性的过滤
          */
         boolean accept(Class<?> clazz);
-    }
-
-
-    public static void main(String[] args) {
     }
 
 }

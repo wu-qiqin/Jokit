@@ -1,6 +1,6 @@
 package com.hujinwen.client.nano;
 
-import com.hujinwen.entity.annotation.nano.Router;
+import com.hujinwen.entity.annotations.nano.Router;
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.NanoHTTPD;
 import org.nanohttpd.protocols.http.response.Response;

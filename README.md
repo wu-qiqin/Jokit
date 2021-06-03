@@ -5,6 +5,13 @@
 [TOC]
 
 
+## 简介
+### 最近更新
+* 0.7.0
+  新增ClassUtils，可扫描（过滤）项目中所有类
+  
+* 0.8.0
+  新增定时器工具（基于quartz）
 
 ## 使用
 导入[release](https://github.com/i-hujinwen/JUtils/releases)中的jar包

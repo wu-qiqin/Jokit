@@ -1,4 +1,4 @@
-package com.hujinwen.entity.annotation.nano;
+package com.hujinwen.entity.annotations.nano;
 
 import java.lang.annotation.*;
 
