@@ -13,6 +13,7 @@ class QuartzJobSchedulerTest {
 
     public static void main(String[] args) throws SchedulerException {
         QuartzJobScheduler.schedule();
+        System.out.println();
     }
 
 }

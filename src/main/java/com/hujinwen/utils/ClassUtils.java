@@ -20,26 +20,32 @@ public class ClassUtils extends org.apache.commons.lang3.ClassUtils {
      */
     private static final Pattern SLASH_PATTERN = Pattern.compile("[/\\\\]");
 
+    @Deprecated
     public static Class<?>[] scanClass() {
         return scanClass(PathUtils.getResourcePath());
     }
 
+    @Deprecated
     public static Class<?>[] scanClass(ClassFilter classFilter) {
         return scanClass(PathUtils.getResourcePath(), classFilter);
     }
 
+    @Deprecated
     public static Class<?>[] scanClass(File rootFile) {
         return scanClass(rootFile, null);
     }
 
+    @Deprecated
     public static Class<?>[] scanClass(File rootFile, ClassFilter classFilter) {
         return scanClass(rootFile, rootFile.getPath(), new HashSet<>(), classFilter);
     }
 
+    @Deprecated
     public static Class<?>[] scanClass(String rootPath) {
         return scanClass(rootPath, null);
     }
 
+    @Deprecated
     public static Class<?>[] scanClass(String rootPath, ClassFilter classFilter) {
         return scanClass(new File(rootPath), rootPath, new HashSet<>(), classFilter);
     }
@@ -53,6 +59,7 @@ public class ClassUtils extends org.apache.commons.lang3.ClassUtils {
      * @param classNames
      * @param classFilter
      */
+    @Deprecated
     private static Class<?>[] scanClass(File pathFile, String rootPath, Set<Class<?>> classNames, ClassFilter classFilter) {
         if (pathFile == null) {
             return classNames.toArray(new Class<?>[0]);

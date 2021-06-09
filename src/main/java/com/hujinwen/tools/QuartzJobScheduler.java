@@ -3,10 +3,10 @@ package com.hujinwen.tools;
 import com.hujinwen.entity.annotations.quartz.QuartzJob;
 import com.hujinwen.entity.annotations.quartz.Scheduled;
 import com.hujinwen.exceptions.quartz.InstanceInitializeException;
-import com.hujinwen.utils.ClassUtils;
 import com.hujinwen.utils.StringUtils;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +14,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by hu-jinwen on 2021/6/2
@@ -42,9 +43,21 @@ public class QuartzJobScheduler {
 
     /**
      * 开始装载
+     * <p>
+     * ** 最好提供扫描的包前缀，尽量精准的扫描jar包 **
      */
     public static void schedule() throws SchedulerException {
-        final Class<?>[] jobClasses = ClassUtils.scanClass(clazz -> clazz.getAnnotation(QuartzJob.class) != null);
+        schedule("");
+    }
+
+    /**
+     * 开始装载
+     *
+     * @param scanPrefix 扫描的包前缀
+     */
+    public static void schedule(String scanPrefix) throws SchedulerException {
+        final Reflections reflections = new Reflections(scanPrefix);
+        final Set<Class<?>> jobClasses = reflections.getTypesAnnotatedWith(QuartzJob.class);
 
         for (Class<?> clazz : jobClasses) {
             try {
@@ -100,6 +113,10 @@ public class QuartzJobScheduler {
 
             final Object instance = JOB_CLASS_INSTANCE_MAP.get(method.getDeclaringClass());
             try {
+                // 处理 private 方法
+                if (!method.isAccessible()) {
+                    method.setAccessible(true);
+                }
                 method.invoke(instance, params);
             } catch (Exception e) {
                 logger.error("Method invoke failed!", e);
