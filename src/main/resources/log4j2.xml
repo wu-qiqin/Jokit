@@ -3,7 +3,7 @@
 
     <properties>
         <property name="LOG_HOME">logs</property>
-        <property name="FILE_NAME">ssh-verify</property>
+        <property name="FILE_NAME">Jokit</property>
     </properties>
 
     <Appenders>

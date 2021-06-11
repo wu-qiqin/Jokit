@@ -6,7 +6,7 @@
 
     <groupId>com.hujinwen</groupId>
     <artifactId>Jokit</artifactId>
-    <version>0.8.1</version>
+    <version>0.8.2</version>
 
     <repositories>
         <repository>
@@ -204,6 +204,9 @@
                 <version>2.3</version>
                 <configuration>
                     <appendAssemblyId>false</appendAssemblyId>
+                    <descriptors>
+                        <descriptor>src/main/resources/assembly.xml</descriptor>
+                    </descriptors>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
@@ -213,21 +216,12 @@
                         <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>assembly</goal>
+                            <goal>single</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
-        <!--        <resources>-->
-        <!--            <resource>-->
-        <!--                <directory>lib</directory>-->
-        <!--                <targetPath>/BOOT-INF/lib/</targetPath>-->
-        <!--                <includes>-->
-        <!--                    <include>**/*.jar</include>-->
-        <!--                </includes>-->
-        <!--            </resource>-->
-        <!--        </resources>-->
     </build>
 
 </project>
