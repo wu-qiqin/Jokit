@@ -21,6 +21,15 @@
                 <include>*.jar</include>
             </includes>
         </fileSet>
+        <!-- 将编译后的所有 .class 文件打进去 -->
+        <fileSet>
+            <directory>${project.build.directory}/classes</directory>
+            <outputDirectory>/</outputDirectory>
+            <excludes>
+                <exclude>*.xml</exclude>
+                <exclude>*.properties</exclude>
+            </excludes>
+        </fileSet>
     </fileSets>
 
     <dependencySets>
