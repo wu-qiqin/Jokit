@@ -90,10 +90,31 @@ public class QuartzJobScheduler {
         DEFAULT_SCHEDULER.start();
     }
 
+    /**
+     * 将任务加入到调度
+     * TODO 待完善，完善这个类，使用方式等等
+     */
+    public static void schedule(Object obj, Method method, String cron) throws SchedulerException {
+        if (obj != null) {
+            JOB_CLASS_INSTANCE_MAP.put(obj.getClass(), obj);
+        }
+        final CronTrigger cronTrigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule(cron)).build();
+        final JobDetail jobDetail = JobBuilder.newJob(DefaultJob.class).setJobData(new JobDataMap() {{
+            put(JOB_METHOD_KEY, method);
+        }}).build();
+
+        DEFAULT_SCHEDULER.scheduleJob(jobDetail, cronTrigger);
+    }
+
+    public static void start() throws SchedulerException {
+        DEFAULT_SCHEDULER.start();
+    }
+
     public static void shutdown() throws SchedulerException {
         DEFAULT_SCHEDULER.shutdown();
     }
 
+    @DisallowConcurrentExecution  // TODO 执行完一次再执行下一次，需要改为配置参数传入。此处暂时这么做
     public static class DefaultJob implements org.quartz.Job {
         private static final Logger logger = LoggerFactory.getLogger(DefaultJob.class);
 
@@ -101,7 +122,7 @@ public class QuartzJobScheduler {
         public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
             final Method method = (Method) jobExecutionContext.getMergedJobDataMap().get(JOB_METHOD_KEY);
 
-            // 构造执行参数
+            // 构造方法入参
             final Class<?>[] paramTypes = method.getParameterTypes();
             final Object[] params = new Object[paramTypes.length];
             for (int i = 0; i < paramTypes.length; i++) {
