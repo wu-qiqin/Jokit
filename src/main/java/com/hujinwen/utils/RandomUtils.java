@@ -1,7 +1,5 @@
 package com.hujinwen.utils;
 
-import org.apache.commons.lang3.ObjectUtils;
-
 import java.util.*;
 
 /**
@@ -72,4 +70,50 @@ public class RandomUtils {
         }
         return null;
     }
+
+    /**
+     * overwrite
+     */
+    public static String randomStr(int size) {
+        return randomStr(size, true, true, true, true);
+    }
+
+
+    /**
+     * 随机字符串
+     */
+    public static String randomStr(int size, boolean hasUpperLetter, boolean hasLowerLetter, boolean hasNumber, boolean hasUnderScore) {
+        final List<Character> charList = new ArrayList<>();
+        if (size <= 0) {
+            return "";
+        }
+
+        if (hasUpperLetter) {
+            charList.addAll(StringUtils.UPPER_LETTER_CHAR_LIST);
+        }
+        if (hasLowerLetter) {
+            charList.addAll(StringUtils.LOWER_LETTER_CHAR_LIST);
+        }
+        if (hasNumber) {
+            charList.addAll(StringUtils.NUMBER_CHAR_LIST);
+        }
+        if (hasUnderScore) {
+            for (int i = 0; i < 10; i++) {
+                charList.add('_');
+            }
+        }
+
+        if (ObjectUtils.isEmpty(charList)) {
+            return "";
+        }
+
+        Collections.shuffle(charList);
+
+        final StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < size; i++) {
+            sb.append(randomChoice(charList));
+        }
+        return sb.toString();
+    }
+
 }
