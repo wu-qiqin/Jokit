@@ -17,18 +17,31 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.cookie.BasicClientCookie;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.io.HttpClientConnectionManager;
 import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.apache.hc.client5.http.protocol.RedirectLocations;
+import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
+import org.apache.hc.client5.http.socket.PlainConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
 import org.apache.hc.core5.http.*;
+import org.apache.hc.core5.http.config.Registry;
+import org.apache.hc.core5.http.config.RegistryBuilder;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 import org.apache.hc.core5.http.message.BasicNameValuePair;
+import org.apache.hc.core5.ssl.SSLContextBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.net.ssl.*;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -270,6 +283,9 @@ public class HttpClient implements Closeable {
             httpClient = clientBuilder.build();
         }
         context = HttpClientContext.create();
+
+        // FIXME 信任所有站点
+        trustEveryone();
         response = httpClient.execute(request, context);
 
         httpResult.extractField(response);
@@ -297,6 +313,21 @@ public class HttpClient implements Closeable {
                     new UsernamePasswordCredentials(proxy.getUsername(), proxy.getPassword().toCharArray())
             );
         }
+
+        // FIXME just for test
+        try {
+            SSLContextBuilder builder = new SSLContextBuilder();
+            builder.loadTrustMaterial(null, (X509Certificate[] x509Certificates, String s) -> true);
+            SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(builder.build(), new String[]{"SSLv2Hello", "SSLv3", "TLSv1", "TLSv1.1", "TLSv1.2"}, null, NoopHostnameVerifier.INSTANCE);
+            Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
+                    .register("http", new PlainConnectionSocketFactory())
+                    .register("https", socketFactory).build();
+            HttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(registry);
+            clientBuilder.setConnectionManager(connManager);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         clientBuilder.setProxy(new HttpHost(proxy.getHost(), proxy.getPort()));
         clientBuilder.setDefaultCredentialsProvider(credentialsProvider);
     }
@@ -391,6 +422,39 @@ public class HttpClient implements Closeable {
 //        }
         if (httpClient != null) {
             httpClient.close();
+        }
+    }
+
+    /**
+     * 信任任何站点
+     */
+    public static void trustEveryone() {
+        try {
+            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            });
+
+            SSLContext context = SSLContext.getInstance("TLS");
+            context.init(null, new X509TrustManager[]{new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                }
+
+                @Override
+                public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                }
+
+                @Override
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }
+            }}, new SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(context.getSocketFactory());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
