@@ -3,6 +3,7 @@ package com.hujinwen.utils;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 
 class FileUtilsTest {
 
@@ -16,7 +17,11 @@ class FileUtilsTest {
 
     @Test
     void getResourceFile() {
-        final File resourceFile = FileUtils.getResourceFile("log4j2.xml");
+        try {
+            final File resourceFile = FileUtils.getResourceFile("log4j2.xml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println();
     }
 

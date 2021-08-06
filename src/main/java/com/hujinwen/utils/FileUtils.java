@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
  * <p>
  * 文件相关工具
  */
-public class FileUtils {
+public class FileUtils extends org.apache.commons.io.FileUtils {
     private static final Logger logger = LogManager.getLogger(FileUtils.class);
 
     private static final Yaml YAML_LOADER = new Yaml();
@@ -169,20 +169,28 @@ public class FileUtils {
     /**
      * 获取resource绝对路径
      */
-    public static File getResourceFile(String filename) {
-        File resourceFile = null;
+    public static File getResourceFile(String filename) throws IOException {
         final URL url = FileUtils.class.getClassLoader().getResource(filename);
-        if (url != null) {
+        if (url == null) {
+            return null;
+        }
+        final String path = url.getPath();
+        if (path.startsWith("file") && path.contains("!")) {
+            final InputStream resourceStream = getResourceAsStream(filename);
+            final File tempFile = new File(".resourceFileTemp/" + filename);
+            copyInputStreamToFile(resourceStream, tempFile);
+            return tempFile;
+        } else {
             try {
-                resourceFile = new File(url.toURI());
-            } catch (URISyntaxException ignored) {
+                return new File(url.toURI());
+            } catch (URISyntaxException e) {
+                throw new IOException(e.getMessage());
             }
         }
-        return resourceFile;
     }
 
     /**
-     * 以inputstream的形式读取resource下的文件
+     * 以 inputstream 的形式读取resource下的文件
      */
     public static InputStream getResourceAsStream(String filename) {
         return FileUtils.class.getClassLoader().getResourceAsStream(filename);
