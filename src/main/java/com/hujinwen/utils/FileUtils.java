@@ -176,10 +176,13 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
         }
         final String path = url.getPath();
         if (path.startsWith("file") && path.contains("!")) {
-            final InputStream resourceStream = getResourceAsStream(filename);
-            final File tempFile = new File(".resourceFileTemp/" + filename);
-            copyInputStreamToFile(resourceStream, tempFile);
-            return tempFile;
+            try (
+                    final InputStream resourceStream = getResourceAsStream(filename);
+            ) {
+                final File tempFile = new File(".resourceFileTemp/" + filename);
+                copyInputStreamToFile(resourceStream, tempFile);
+                return tempFile;
+            }
         } else {
             try {
                 return new File(url.toURI());
