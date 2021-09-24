@@ -205,7 +205,7 @@
                 <configuration>
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptors>
-                        <descriptor>src/main/resources/assembly.xml</descriptor>
+                        <descriptor>${project.basedir}/src/main/resources/assembly.xml</descriptor>
                     </descriptors>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
