@@ -75,32 +75,51 @@ public class RandomUtils {
      * overwrite
      */
     public static String randomStr(int size) {
-        return randomStr(size, true, true, true, true);
+        return randomStr(size, true, true, true, true, null);
     }
 
+    /**
+     * overwrite
+     */
+    public static String randomStr(int size, char[] charSeeds) {
+        return randomStr(size, false, false, false, false, charSeeds);
+    }
+
+    /**
+     * overwrite
+     */
+    public static String randomStr(int size, boolean hasUpperLetter, boolean hasLowerLetter, boolean hasNumber, boolean hasUnderScore) {
+        return randomStr(size, hasUpperLetter, hasLowerLetter, hasNumber, hasUnderScore, null);
+    }
 
     /**
      * 随机字符串
      */
-    public static String randomStr(int size, boolean hasUpperLetter, boolean hasLowerLetter, boolean hasNumber, boolean hasUnderScore) {
-        final List<Character> charList = new ArrayList<>();
+    private static String randomStr(int size, boolean hasUpperLetter, boolean hasLowerLetter, boolean hasNumber, boolean hasUnderScore, char[] charSeeds) {
         if (size <= 0) {
             return "";
         }
 
-        if (hasUpperLetter) {
-            charList.addAll(StringUtils.UPPER_LETTER_CHAR_LIST);
-        }
-        if (hasLowerLetter) {
-            charList.addAll(StringUtils.LOWER_LETTER_CHAR_LIST);
-        }
-        if (hasNumber) {
-            charList.addAll(StringUtils.NUMBER_CHAR_LIST);
-        }
-        if (hasUnderScore) {
-            for (int i = 0; i < 10; i++) {
-                charList.add('_');
+        final List<Character> charList;
+        if (charSeeds == null) {
+            charList = new ArrayList<>();
+
+            if (hasUpperLetter) {
+                charList.addAll(StringUtils.UPPER_LETTER_CHAR_LIST);
             }
+            if (hasLowerLetter) {
+                charList.addAll(StringUtils.LOWER_LETTER_CHAR_LIST);
+            }
+            if (hasNumber) {
+                charList.addAll(StringUtils.NUMBER_CHAR_LIST);
+            }
+            if (hasUnderScore) {
+                for (int i = 0; i < 10; i++) {
+                    charList.add('_');
+                }
+            }
+        } else {
+            charList = ArrayUtils.asList(charSeeds);
         }
 
         if (ObjectUtils.isEmpty(charList)) {

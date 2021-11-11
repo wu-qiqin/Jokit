@@ -143,7 +143,7 @@ public class EncryptUtils {
         try {
             byte[] decodeByte = base64Decode(str);
             rs = new String(decodeByte);
-        } catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException ignored) {
         }
 
         return rs;
@@ -153,11 +153,18 @@ public class EncryptUtils {
      * 字符串做md5加密（32位）
      */
     public static String md5(String str) {
+        return md5(str, false);
+    }
+
+    /**
+     * 字符串做md5加密（32位）
+     */
+    public static String md5(String str, boolean isUpperCase) {
         if (StringUtils.isEmpty(str)) {
             return str;
         }
         try {
-            return md5(str.getBytes(StandardCharsets.UTF_8));
+            return md5(str.getBytes(StandardCharsets.UTF_8), isUpperCase);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -167,6 +174,13 @@ public class EncryptUtils {
      * 字节数组做md5加密
      */
     public static String md5(byte[] bytes) {
+        return md5(bytes, false);
+    }
+
+    /**
+     * 字节数组做md5加密
+     */
+    public static String md5(byte[] bytes, boolean isUpperCase) {
         StringBuilder sb = new StringBuilder();
         try {
             for (byte b : md5ToBytes(bytes)) {
@@ -175,7 +189,8 @@ public class EncryptUtils {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return sb.toString().toLowerCase();
+        final String md5Str = sb.toString();
+        return isUpperCase ? md5Str : md5Str.toLowerCase();
     }
 
     /**

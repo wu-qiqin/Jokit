@@ -13,4 +13,10 @@ class RandomUtilsTest {
         final String str2 = RandomUtils.randomChoice(new String[22]);
     }
 
+    @Test
+    void test2() {
+        final String s = RandomUtils.randomStr(32);
+        System.out.println();
+    }
+
 }
