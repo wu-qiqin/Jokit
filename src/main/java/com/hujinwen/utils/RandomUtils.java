@@ -8,7 +8,7 @@ import java.util.*;
  * 随机数相关工具类
  */
 public class RandomUtils {
-    private static final Random RANDOM = new Random();
+    protected static final Random RANDOM = new Random();
 
     /**
      * 生成36位 uuid（随机不重复的字符串）
