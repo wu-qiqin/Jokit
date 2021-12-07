@@ -160,4 +160,11 @@ public class UrlUtils {
         }
     }
 
+    /**
+     * 判断字符串是不是urlEncode过的
+     */
+    public static boolean isUrlEncoded(String str) {
+        return EncryptUtils.isUrlEncoded(str);
+    }
+
 }
