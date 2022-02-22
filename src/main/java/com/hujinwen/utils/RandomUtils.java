@@ -75,27 +75,36 @@ public class RandomUtils {
      * overwrite
      */
     public static String randomStr(int size) {
-        return randomStr(size, true, true, true, true, null);
+        return randomStr(size, true, true, true, true, true, null);
     }
 
     /**
      * overwrite
      */
     public static String randomStr(int size, char[] charSeeds) {
-        return randomStr(size, false, false, false, false, charSeeds);
+        return randomStr(size, false, false, false, false, false, charSeeds);
     }
 
     /**
      * overwrite
      */
+    public static String randomStr(int size, boolean hasUpperLetter, boolean hasLowerLetter, boolean hasNumber, boolean hasLine, boolean hasUnderScore) {
+        return randomStr(size, hasUpperLetter, hasLowerLetter, hasNumber, hasLine, hasUnderScore, null);
+    }
+
+    /**
+     * overwrite
+     */
+    @Deprecated
     public static String randomStr(int size, boolean hasUpperLetter, boolean hasLowerLetter, boolean hasNumber, boolean hasUnderScore) {
-        return randomStr(size, hasUpperLetter, hasLowerLetter, hasNumber, hasUnderScore, null);
+        return randomStr(size, hasUpperLetter, hasLowerLetter, hasNumber, false, hasUnderScore, null);
     }
 
     /**
      * 随机字符串
+     * TODO 这里做一个速度优化，优化一个最快的方法
      */
-    private static String randomStr(int size, boolean hasUpperLetter, boolean hasLowerLetter, boolean hasNumber, boolean hasUnderScore, char[] charSeeds) {
+    private static String randomStr(int size, boolean hasUpperLetter, boolean hasLowerLetter, boolean hasNumber, boolean hasLine, boolean hasUnderScore, char[] charSeeds) {
         if (size <= 0) {
             return "";
         }
@@ -111,11 +120,18 @@ public class RandomUtils {
                 charList.addAll(StringUtils.LOWER_LETTER_CHAR_LIST);
             }
             if (hasNumber) {
-                charList.addAll(StringUtils.NUMBER_CHAR_LIST);
+                for (int i = 0; i < 3; i++) {
+                    charList.addAll(StringUtils.NUMBER_CHAR_LIST);
+                }
             }
             if (hasUnderScore) {
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < 5; i++) {
                     charList.add('_');
+                }
+            }
+            if (hasLine) {
+                for (int i = 0; i < 5; i++) {
+                    charList.add('-');
                 }
             }
         } else {
@@ -134,5 +150,6 @@ public class RandomUtils {
         }
         return sb.toString();
     }
+
 
 }
